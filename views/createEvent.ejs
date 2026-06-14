@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= event ? 'Edit Event' : 'Create Event' %></title>
+  <link rel="stylesheet" href="/css/style5.css" />
+</head>
+<body>
+
+<div class="container">
+  <h1><%= event ? 'Edit Event' : 'Create Event' %></h1>
+
+  <form method="POST" action="<%= event ? '/admin/edit/' + event.event_id : '/admin/create' %>">
+    
+    <!-- Event Title -->
+    <div>
+      <label for="title">Event Title</label>
+      <input type="text" id="title" name="title" value="<%= event ? event.title : '' %>" required />
+    </div>
+
+    <!-- Event Description -->
+    <div>
+      <label for="description">Event Description</label>
+      <textarea id="description" name="description" required><%= event ? event.description : '' %></textarea>
+    </div>
+
+    <!-- Date Fields Wrapper -->
+    <!-- Start Date -->
+    <div class="date-input">
+      <label for="start_date">Start Date & Time</label>
+      <input type="datetime-local" id="start_date" name="start_date"
+        value="<%= event ? event.start_date ? event.start_date.replace(' ', 'T') : '' : '' %>" required />
+    </div>
+
+    <!-- End Date -->
+    <div class="date-input">
+      <label for="end_date">End Date & Time</label>
+      <input type="datetime-local" id="end_date" name="end_date"
+        value="<%= event ? event.end_date ? event.end_date.replace(' ', 'T') : '' : '' %>" required />
+    </div>
+
+
+    <!-- Full-Price Ticket -->
+    <div class="ticket-fields">
+      <div class="ticket-input">
+        <label for="full_price_quantity">Full-Price Ticket Quantity</label>
+        <input type="number" id="full_price_quantity" name="full_price_quantity" min="0" value="<%= event ? event.full_price_quantity || 0 : 0 %>" required />
+      </div>
+      <div class="ticket-input">
+        <label for="full_price">Full-Price Ticket Price ($)</label>
+        <input type="number" id="full_price" name="full_price" step="0.01" min="0" value="<%= event ? event.full_price || 0 : 0 %>" required />
+      </div>
+    </div>
+
+    <!-- Concession Ticket -->
+    <div class="ticket-fields">
+      <div class="ticket-input">
+        <label for="concession_quantity">Concession Ticket Quantity</label>
+        <input type="number" id="concession_quantity" name="concession_quantity" min="0" value="<%= event ? event.concession_quantity || 0 : 0 %>" required />
+      </div>
+      <div class="ticket-input">
+        <label for="concession_price">Concession Ticket Price ($)</label>
+        <input type="number" id="concession_price" name="concession_price" step="0.01" min="0" value="<%= event ? event.concession_price || 0 : 0 %>" required />
+      </div>
+    </div>
+
+    <!-- 🔄 Custom Ticket Types -->
+    <hr>
+    <h3>🎟️ Additional Ticket Types</h3>
+
+    <div id="custom-tickets"></div>
+
+    <button type="button" onclick="addCustomTicket()">➕ Add Ticket Type</button>
+
+    <!-- Template -->
+    <template id="ticket-template">
+      <div class="ticket-fields custom-ticket">
+        <div class="ticket-input">
+          <label>Type</label>
+          <input type="text" name="ticket_types[]" required />
+        </div>
+        <div class="ticket-input">
+          <label>Quantity</label>
+          <input type="number" name="ticket_quantities[]" min="0" required />
+        </div>
+        <div class="ticket-input">
+          <label>Price ($)</label>
+          <input type="number" name="ticket_prices[]" step="0.01" min="0" required />
+        </div>
+        <button type="button" onclick="this.parentElement.remove()">❌ Remove</button>
+      </div>
+    </template>
+
+    <!-- Submit -->
+    <div>
+      <button type="submit"><%= event ? 'Update Event' : 'Create Event' %></button>
+    </div>
+  </form>
+
+  <a href="/admin/home">Back to Home</a>
+</div>
+
+<script>
+  function addCustomTicket() {
+    const template = document.getElementById('ticket-template').content.cloneNode(true);
+    document.getElementById('custom-tickets').appendChild(template);
+  }
+</script>
+
+</body>
+</html>

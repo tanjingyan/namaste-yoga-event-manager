@@ -1,0 +1,74 @@
+/* Full-screen center alignment */
+body, html {
+    height: 100vh; /* Use viewport height instead of 100% */
+    width: 100vw;  /* Explicitly set width to viewport width */
+    margin: 0;
+    padding: 0;    /* Add padding: 0 to be safe */
+    font-family: sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(-45deg, #f9d342, #ff9a8b, #fcd5ce, #ffe066, #a8e6cf, #ffd3a5);
+    background-size: 400% 400%;
+    animation: gradientMove 15s ease infinite;
+    overflow-x: hidden; /* Prevent horizontal scrolling */
+}
+
+/* Main container centered vertically and horizontally */
+.main-container {
+    text-align: center;
+    transform: translateY(-100px);
+}
+
+/* Title styling */
+.main-title {
+    font-size: 3em;
+    color: #2a2a40;
+    margin-bottom: 2em;
+}
+
+/* Flex row for cards */
+.portal-boxes {
+    display: flex;
+    justify-content: center;
+    gap: 3em;
+}
+
+/* Make portal-card a clickable <a> */
+.portal-card {
+    display: block; /* Required for <a> wrapper */
+    background: rgba(255, 255, 255, 0.3);
+    padding: 2em;
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    width: 220px;
+    transition: transform 0.3s ease;
+    text-decoration: none; /* Remove underline */
+    color: #2a2a40; /* Inherit text color */
+}
+
+.portal-card:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.4);
+}
+
+/* Card title */
+.portal-card h2,
+.portal-card p {
+    margin: 0 0 1em 0;
+    color: inherit;
+}
+
+/* Remove styling for inner <a>, because we no longer need one */
+.portal-card a {
+    display: none;
+}
+
+
+
+/* Background animation */
+@keyframes gradientMove {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}

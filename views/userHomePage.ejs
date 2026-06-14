@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>All Yoga Events</title>
+  <link rel="stylesheet" href="/css/style3.css" />
+</head>
+<body>
+
+  <div class="site-title-wrapper">
+  <h1 class="site-title"><%= settings.siteTitle || 'Namaste Yoga' %></h1>
+  <p class="site-description"><%= settings.siteDescription || 'Where you can find balance, strength, and peace through mindful yoga practice.' %></p>
+  </div>
+
+  <div class="container">
+    <div class="back-link-container" style="margin-bottom: 20px;">
+      <a href="/" class="back-link">← Back to Main Page</a>
+    </div>
+
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+      <h1 class="page-title">View All Events</h1>
+      <!-- 🔗 Manage Booking Button -->
+      <a href="/user/managebooking" style="
+        padding: 10px 20px;
+        background-color: #2ecc71;
+        color: white;
+        text-decoration: none;
+        border-radius: 6px;
+        font-weight: bold;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      ">
+        🔎 Manage My Booking
+      </a>
+    </div>
+
+    <!-- 🎟️ Event Cards -->
+    <div class="card-container">
+      <% events.forEach(event => { %>
+        <div class="event-card">
+          <h2 class="event-title"><%= event.title %></h2>
+
+          <div class="event-info">
+            <div class="event-meta">
+              <p>📅 <strong>Start:</strong> <%= formatDate(event.start_date) %></p>
+              <p>🏁 <strong>End:</strong> <%= formatDate(event.end_date) %></p>
+            </div>
+            <div class="price-section">
+              <% const eventTickets = tickets.filter(t => t.event_id === event.event_id); %>
+              <% if (eventTickets.length === 0) { %>
+                <p>No ticket types available</p>
+              <% } else { %>
+                <% eventTickets.forEach(t => { %>
+                  <p><strong><%= t.type %>:</strong> <%= t.price %> USD</p>
+                <% }); %>
+              <% } %>
+              <small class="tax-note">incl. Sales tax</small>
+            </div>
+          </div>
+
+          <hr />
+
+          <p class="event-description"><%= event.description %></p>
+
+          <div class="reserve-button-wrapper">
+            <form method="GET" action="/user/make-yoga-session-booking/<%= event.event_id %>">
+              <button type="submit" class="reserve-button">Reserve</button>
+            </form>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const cards = document.querySelectorAll('.event-card');
+
+      cards.forEach(card => {
+        card.addEventListener('click', (e) => {
+          if (e.target.closest('button')) return;
+          cards.forEach(c => c.classList.remove('selected'));
+          card.classList.add('selected');
+        });
+      });
+    });
+  </script>
+
+</body>
+</html>

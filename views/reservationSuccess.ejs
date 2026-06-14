@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>All Yoga Events</title>
+  <link rel="stylesheet" href="/css/style3.css" />
+</head>
+<body>
+
+  <div class="site-title-wrapper">
+  <h1 class="site-title"><%= settings.siteTitle || 'Namaste Yoga' %></h1>
+  <p class="site-description"><%= settings.siteDescription || 'Where you can find balance, strength, and peace through mindful yoga practice.' %></p>
+  </div>
+
+    <div class="container">
+        
+    <div class="back-link-container" style="margin-bottom: 20px;">
+      <a href="/user/home" class="back-link">← Back to Main Page</a>
+    </div>
+    <h1>🎉 Booking Confirmed!</h1>
+    <p>Thank you, <strong><%= reservation.name %></strong>!</p>
+    <p>Your reservation code: <strong><%= reservation.reservation_code %></strong></p>
+
+    <h2>Event Details</h2>
+    <p><strong>Event:</strong> <%= event.title %></p>
+    <p><strong>Date:</strong> <%= event.start_date %> to <%= event.end_date %></p>
+    <h3>🎟️ Ticket Summary</h3>
+    <table border="1" cellspacing="0" cellpadding="8">
+      <tr>
+        <th>Type</th>
+        <th>Quantity</th>
+        <th>Price (Each)</th>
+        <th>Total</th>
+      </tr>
+      <% let total = 0; %>
+      <% reservation.tickets.forEach(ticket => { 
+          const lineTotal = ticket.quantity * ticket.price;
+          total += lineTotal;
+      %>
+        <tr>
+          <td><%= ticket.type %></td>
+          <td><%= ticket.quantity %></td>
+          <td>$<%= ticket.price.toFixed(2) %></td>
+          <td>$<%= lineTotal.toFixed(2) %></td>
+        </tr>
+      <% }); %>
+      <tr>
+        <td colspan="3" style="text-align:right;"><strong>Total</strong></td>
+        <td><strong>$<%= total.toFixed(2) %></strong></td>
+      </tr>
+    </table>
+
+    <hr>
+
+    <h3>📄 Download Your Confirmation</h3>
+    <p>You can save your reservation details as a PDF or TXT file for your records:</p>
+
+    <a href="/user/download-confirmation-pdf/<%= reservation.reservation_code %>" 
+    target="_blank" class="btn btn-primary download-confirmation">
+    📄 Download PDF Confirmation
+    </a>
+    &nbsp;
+    <a href="/user/download-confirmation-txt/<%= reservation.reservation_code %>" 
+    target="_blank" class="btn btn-secondary download-confirmation">
+    📝 Download TXT Confirmation
+    </a>
+
+    </div>
+</body>
+
+<!-- ✅ Modal HTML -->
+<div id="downloadModal" style="
+  display:none; 
+  position: fixed; top: 0; left: 0; 
+  width: 100%; height: 100%; 
+  background: rgba(0,0,0,0.6); 
+  z-index: 9999; 
+  align-items: center; justify-content: center;">
+  <div style="
+    background: #fff; 
+    padding: 20px; 
+    max-width: 400px; 
+    text-align: center; 
+    border-radius: 8px;">
+    <h3>⚠️ Please download your confirmation before leaving</h3>
+    <p>Click one of the download buttons to save your confirmation.</p>
+    <button onclick="closeModal()" style="
+      margin-top:10px; 
+      padding: 8px 16px; 
+      border: none; 
+      background: #007bff; 
+      color: #fff; 
+      border-radius: 4px; 
+      cursor: pointer;">Okay</button>
+  </div>
+</div>
+
+<script>
+// Auto-trigger the PDF download and show modal on page load
+window.addEventListener('load', function() {
+    window.open('/user/download-confirmation-pdf/<%= reservation.reservation_code %>', '_blank');
+    showModal();  // Show modal immediately on load
+});
+
+// Track if user clicked download
+let confirmationDownloaded = false;
+document.querySelectorAll('.download-confirmation').forEach(btn => {
+    btn.addEventListener('click', () => {
+        confirmationDownloaded = true;
+        closeModal();
+    });
+});
+
+// Show modal on pagehide (back/forward/tab close) 
+window.addEventListener('pagehide', function() {
+    if (!confirmationDownloaded) {
+        showModal();
+    }
+});
+
+// Show modal on visibilitychange (tab switch)
+document.addEventListener('visibilitychange', function() {
+    if (document.visibilityState === 'hidden' && !confirmationDownloaded) {
+        showModal();
+    }
+});
+
+// Functions to show/hide modal
+function showModal() {
+    document.getElementById('downloadModal').style.display = 'flex';
+}
+function closeModal() {
+    document.getElementById('downloadModal').style.display = 'none';
+}
+
+</script>
+

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Book Yoga Session</title>
+  <link rel="stylesheet" href="/css/style7.css" />
+</head>
+<body>
+  <div class="site-title-wrapper">
+    <h1 class="site-title">Namaste Yoga</h1>
+    <p class="site-description">
+      Where you can find balance, strength, and peace through mindful yoga practice.
+    </p>
+  </div>
+
+  <div class="container">
+    <div class="back-link-container" style="margin-bottom: 20px;">
+      <a href="/user/home" class="back-link">← Back to Event Page</a>
+    </div>
+
+    <h1>Book Yoga Session</h1>
+
+    <p><strong>Event:</strong> <%= event.title %></p>
+    <p><strong>Date:</strong> <%= event.start_date %></p>
+    <p><strong>Full Price:</strong> $<%= event.full_price %></p>
+    <p><strong>Concession Price:</strong> $<%= event.concession_price %></p>
+    <br>
+    <form method="POST" action="/user/make-yoga-session-booking/<%= event.event_id %>">
+      <label for="username">Name</label>
+      <input id="username" type="text" name="name" placeholder="Your Name" required /><br /><br />
+
+      <label for="email">Email Address</label>
+      <input id="email" type="email" name="email" placeholder="Your Email" required /><br /><br />
+
+      <h3>Select Ticket Quantities</h3>
+      <% ticketOptions.forEach(ticket => { %>
+        <div style="margin-bottom: 10px;">
+          <label>
+            <%= ticket.type %> - $<%= ticket.price %> (Remaining: <%= ticket.remaining %>)
+          </label><br />
+          <% if (ticket.remaining > 0) { %>
+            <input 
+              type="number" 
+              name="quantities[<%= ticket.type %>]" 
+              min="0" 
+              max="<%= ticket.remaining %>" 
+              value="0"
+              data-type="<%= ticket.type %>" 
+              data-price="<%= ticket.price %>"
+              class="ticket-quantity"
+            />
+          <% } else { %>
+            <input type="number" disabled value="Sold Out" />
+          <% } %>
+        </div>
+      <% }) %>
+
+      <h3>🧾 Ticket Summary</h3>
+      <table id="summaryTable" border="1" cellpadding="6" style="width:100%; margin-bottom:20px;">
+        <thead>
+          <tr>
+            <th>Type</th>
+            <th>Qty</th>
+            <th>Price</th>
+            <th>Subtotal</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+
+      <h3>Total Amount: $<span id="totalAmount">0.00</span></h3>
+
+      <button type="submit">Reserve</button>
+    </form>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const inputs = document.querySelectorAll('.ticket-quantity');
+      const totalDisplay = document.getElementById('totalAmount');
+      const summaryTableBody = document.querySelector('#summaryTable tbody');
+
+      function updateSummary() {
+        let total = 0;
+        summaryTableBody.innerHTML = ''; // Clear existing rows
+
+        inputs.forEach(input => {
+          const qty = parseInt(input.value) || 0;
+          const price = parseFloat(input.dataset.price);
+          const type = input.dataset.type;
+
+          if (qty > 0) {
+            const subtotal = qty * price;
+            total += subtotal;
+
+            const row = document.createElement('tr');
+            row.innerHTML = `
+              <td>${type}</td>
+              <td>${qty}</td>
+              <td>$${price.toFixed(2)}</td>
+              <td>$${subtotal.toFixed(2)}</td>
+            `;
+            summaryTableBody.appendChild(row);
+          }
+        });
+
+        totalDisplay.textContent = total.toFixed(2);
+      }
+
+      inputs.forEach(input => {
+        input.addEventListener('input', updateSummary);
+      });
+    });
+  </script>
+</body>
+</html>

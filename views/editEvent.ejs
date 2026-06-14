@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= event ? 'Edit Event' : 'Create Event' %></title>
+  <link rel="stylesheet" href="/css/style5.css" />
+</head>
+<body>
+
+<div class="container">
+  <h1><%= event ? 'Edit Event' : 'Create Event' %></h1>
+
+  <form method="POST" action="<%= event ? '/admin/edit/' + event.event_id : '/admin/create' %>">
+
+    <!-- Event Title -->
+    <div>
+      <label for="title">Event Title</label>
+      <input type="text" id="title" name="title" value="<%= event ? event.title : '' %>" required />
+    </div>
+
+    <!-- Event Description -->
+    <div>
+      <label for="description">Event Description</label>
+      <textarea id="description" name="description" required><%= event ? event.description : '' %></textarea>
+    </div>
+
+    <!-- Date Fields -->
+    <div class="date-fields">
+      <div class="date-input">
+        <label for="start_date">Start Date & Time</label>
+        <input type="datetime-local" id="start_date" name="start_date"
+          value="<%= event && event.start_date ? event.start_date.replace(' ', 'T') : '' %>" required />
+      </div>
+      <div class="date-input">
+        <label for="end_date">End Date & Time</label>
+        <input type="datetime-local" id="end_date" name="end_date"
+          value="<%= event && event.end_date ? event.end_date.replace(' ', 'T') : '' %>" required />
+      </div>
+    </div>
+
+
+    <!-- Default Ticket Types -->
+    <% const fullTicket = tickets.find(t => t.type === 'Full') || { quantity: '', price: '' }; %>
+    <% const concessionTicket = tickets.find(t => t.type === 'Concession') || { quantity: '', price: '' }; %>
+
+    <div class="ticket-fields">
+      <div class="ticket-input">
+        <label>Full Ticket Quantity</label>
+        <input type="number" name="full_price_quantity" min="0" value="<%= fullTicket.quantity %>" required />
+      </div>
+      <div class="ticket-input">
+        <label>Full Ticket Price ($)</label>
+        <input type="number" name="full_price" step="0.01" min="0" value="<%= fullTicket.price %>" required />
+      </div>
+    </div>
+
+    <div class="ticket-fields">
+      <div class="ticket-input">
+        <label>Concession Ticket Quantity</label>
+        <input type="number" name="concession_quantity" min="0" value="<%= concessionTicket.quantity %>" required />
+      </div>
+      <div class="ticket-input">
+        <label>Concession Ticket Price ($)</label>
+        <input type="number" name="concession_price" step="0.01" min="0" value="<%= concessionTicket.price %>" required />
+      </div>
+    </div>
+
+    <!-- Custom Ticket Types -->
+    <h3>Custom Ticket Types</h3>
+    <div id="ticket-types">
+      <% const customTickets = tickets.filter(t => t.type !== 'Full' && t.type !== 'Concession'); %>
+      <% customTickets.forEach(ticket => { %>
+        <div class="ticket-fields">
+          <div class="ticket-input">
+            <label>Ticket Type</label>
+            <input type="text" name="ticket_type[]" value="<%= ticket.type %>" required />
+          </div>
+          <div class="ticket-input">
+            <label>Quantity</label>
+            <input type="number" name="ticket_quantity[]" min="0" value="<%= ticket.quantity %>" required />
+          </div>
+          <div class="ticket-input">
+            <label>Price ($)</label>
+            <input type="number" name="ticket_price[]" step="0.01" min="0" value="<%= ticket.price %>" required />
+          </div>
+        </div>
+      <% }) %>
+    </div>
+
+    <!-- Add Ticket Button -->
+    <button type="button" onclick="addTicketType()">+ Add Ticket Type</button>
+
+    <!-- Submit -->
+    <div>
+      <button type="submit"><%= event ? 'Update Event' : 'Create Event' %></button>
+    </div>
+  </form>
+
+  <a href="/admin/home">Back to Home</a>
+</div>
+
+<script>
+function addTicketType() {
+  const container = document.getElementById('ticket-types');
+  const wrapper = document.createElement('div');
+  wrapper.classList.add('ticket-fields');
+
+  wrapper.innerHTML = `
+    <div class="ticket-input">
+      <label>Ticket Type</label>
+      <input type="text" name="ticket_type[]" required />
+    </div>
+    <div class="ticket-input">
+      <label>Quantity</label>
+      <input type="number" name="ticket_quantity[]" min="0" required />
+    </div>
+    <div class="ticket-input">
+      <label>Price ($)</label>
+      <input type="number" name="ticket_price[]" step="0.01" min="0" required />
+    </div>
+  `;
+
+  container.appendChild(wrapper);
+}
+</script>
+
+</body>
+</html>

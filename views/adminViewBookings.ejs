@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>All Bookings - Organiser</title>
+  <link rel="stylesheet" href="/css/style6.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>All Bookings</h1>
+    <a href="/admin/home">← Back to Organiser Home</a>
+
+    <% 
+      const publishedEvents = events.filter(event => event.status === 'Published');
+    %>
+    
+    <% if (publishedEvents.length === 0) { %>
+      <p>No published events found.</p>
+    <% } else { %>
+      <div class="card-container">
+        <% publishedEvents.forEach(event => {
+             const eventBookings = bookings.filter(b => b.event_id === event.event_id);
+             const grouped = {};
+             eventBookings.forEach(b => {
+               if (!grouped[b.reservation_code]) {
+                 grouped[b.reservation_code] = [];
+               }
+               grouped[b.reservation_code].push(b);
+             });
+        %>
+          <div class="event-card" onclick="toggleActions(this)">
+            <h3><%= event.title %></h3>
+            <div class="event-info">
+              <div class="event-meta">
+                <p><strong>🗓️ Start:</strong> <%= new Date(event.start_date).toLocaleString() %></p>
+                <p><strong>🏁 End:</strong> <%= new Date(event.end_date).toLocaleString() %></p>
+              </div>
+            </div>
+
+            <div class="booking-table">
+              <% if (Object.keys(grouped).length === 0) { %>
+                <p>No bookings for this event.</p>
+              <% } else { %>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Attendee</th>
+                      <th>Email</th>
+                      <th>Ticket Type(s)</th>
+                      <th>Total Qty</th>
+                      <th>Booking Code</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% Object.keys(grouped).forEach(code => {
+                         const group = grouped[code];
+                         const first = group[0];
+
+                         // Group ticket types and count quantities
+                         const ticketMap = {};
+                         group.forEach(g => {
+                           if (!ticketMap[g.ticket_type]) {
+                             ticketMap[g.ticket_type] = 0;
+                           }
+                           ticketMap[g.ticket_type] += g.quantity;
+                         });
+
+                         const ticketSummary = Object.entries(ticketMap)
+                           .map(([type, qty]) => `${type} x${qty}`)
+                           .join(', ');
+
+                         const totalQty = Object.values(ticketMap).reduce((a, b) => a + b, 0);
+                    %>
+                      <tr>
+                        <td><%= first.name %></td>
+                        <td><%= first.email_address %></td>
+                        <td><%= ticketSummary %></td>
+                        <td><%= totalQty %></td>
+                        <td><%= code %></td>
+                      </tr>
+                    <% }) %>
+                  </tbody>
+                </table>
+              <% } %>
+            </div>
+          </div>
+        <% }) %>
+      </div>
+    <% } %>
+  </div>
+  
+</body>
+
+  <script>
+    function toggleActions(card) {
+      document.querySelectorAll('.event-card').forEach(el => {
+        if (el !== card) el.classList.remove('active');
+      });
+      card.classList.toggle('active');
+    }
+  </script>
+  
+</html>

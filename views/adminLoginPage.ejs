@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Login</title>
+  <link rel="stylesheet" href="/css/style1.css" />
+</head>
+<body>
+
+<div class="site-title-wrapper">
+  <h1 class="site-title"><%= settings.siteTitle || 'Namaste Yoga' %></h1>
+  <p class="site-description"><%= settings.siteDescription || 'Where you can find balance, strength, and peace through mindful yoga practice.' %></p>
+</div>
+
+  <div class="container login-box">
+
+    <!-- Back to Main Page Link -->
+    <div class="back-link-container" style="margin-bottom: 20px;">
+      <a href="/" class="back-link">← Back to Main Page</a>
+    </div>
+
+    <h1 class="page-title">Login as Organiser</h1>
+
+    <form method="POST" action="/admin/login">
+      <div class="input-group">
+        <label for="username">Username</label>
+        <input id="username" type="text" name="username" required class="input-field" />
+      </div>
+
+      <div class="input-group">
+        <label for="password">Password</label>
+        <input id="password" type="password" name="password" required class="input-field" />
+      </div>
+
+      <button type="submit" class="logout-btn">Login</button>
+    </form>
+
+    <p>
+      <a class="action-link" href="/admin/register">Don't have an account? Register here</a>
+    </p>
+  </div>
+
+</body>
+</html>

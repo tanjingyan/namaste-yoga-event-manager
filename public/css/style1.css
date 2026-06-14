@@ -1,0 +1,186 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(-45deg, #f9d342, #ff9a8b, #fcd5ce, #ffe066, #a8e6cf, #ffd3a5);
+    background-size: 400% 400%;
+    animation: gradientMove 15s ease infinite;
+    margin: 0;
+    color: #333;
+    padding: 20px;
+}
+
+@keyframes gradientMove {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* === Header & Site Branding === */
+.site-title-wrapper {
+    text-align: center;
+    margin-top: 30px;
+    margin-bottom: 20px;
+}
+
+.site-title {
+    text-align: center;
+    font-size: 3em;
+    font-weight: 800;
+    margin: 0;
+    color: #2c3e50;
+}
+
+.site-description {
+    font-size: 1.2em;
+    font-style: italic;
+    color: #555;
+    margin-top: 8px;
+}
+
+/* Main container */
+.container {
+    max-width: 400px;
+    width: 100%;
+    background: white;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    margin: 0 auto;
+}
+
+/* Back Link Styling */
+.back-link-container {
+    margin-bottom: 20px;
+}
+
+.back-link {
+    color: #4299e1;
+    text-decoration: none;
+    font-size: 0.95em;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.back-link:hover {
+    color: #3182ce;
+    text-decoration: underline;
+}
+
+/* Page Title */
+.page-title {
+    font-size: 1.8em;
+    color: #4a5568;
+    margin-bottom: 30px;
+    text-align: center;
+    font-weight: 600;
+}
+
+/* Form Styling */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Input Group Styling */
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* Label Styling */
+label {
+    font-size: 0.95em;
+    color: #4a5568;
+    font-weight: 500;
+}
+
+/* Input Fields Styling */
+.input-field {
+    width: 100%;
+    height: 50px;
+    padding: 15px;
+    font-size: 1em;
+    border: 2px solid #e2e8f0;
+    border-radius: 10px;
+    background: #f7fafc;
+    color: #2d3748;
+    transition: all 0.3s ease;
+    font-family: inherit;
+    box-sizing: border-box;
+}
+
+.input-field:focus {
+    border-color: #4299e1;
+    outline: none;
+    background: white;
+}
+
+/* Button Styling */
+.logout-btn {
+    background: linear-gradient(135deg, #4299e1, #3182ce);
+    color: white;
+    padding: 15px 20px;
+    font-size: 1.1em;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 10px;
+}
+
+.logout-btn:hover {
+    background: linear-gradient(135deg, #3182ce, #2c5282);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(66, 153, 225, 0.3);
+}
+
+/* Register Link */
+.action-link {
+    color: #4299e1;
+    text-decoration: none;
+    font-size: 0.95em;
+    transition: all 0.3s ease;
+    display: block;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.action-link:hover {
+    color: #3182ce;
+    text-decoration: underline;
+}
+
+/* General Link Styling */
+a {
+    color: #2980b9;
+    text-decoration: none;
+    font-size: 1em;
+    margin-top: 20px;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Error Message */
+.error-message {
+    color: #e74c3c;
+    font-size: 1em;
+    margin-top: 10px;
+    text-align: center;
+}

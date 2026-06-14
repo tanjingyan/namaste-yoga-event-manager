@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit Site Settings</title>
+  <link rel="stylesheet" href="/css/style2.css">
+</head>
+<body>
+  <div class="container">
+    <a href="/admin/home">&larr; Back to Dashboard</a>
+    <h1>Edit Site Settings</h1>
+
+    <form method="POST" action="/admin/settings">
+      <div class="form-group">
+        <label for="siteTitle">Site Title:</label>
+        <input
+          type="text"
+          id="siteTitle"
+          name="siteTitle"
+          value="<%= settings.siteTitle %>"
+          required
+        >
+      </div>
+      <br>
+      <div class="form-group">
+        <label for="siteDescription">Site Description:</label>
+        <textarea
+          id="siteDescription"
+          name="siteDescription"
+          rows="4"
+          required
+        ><%= settings.siteDescription %></textarea>
+      </div>
+
+      <button type="submit" name="action" value="save">Save Settings</button>
+      <button type="submit" name="action" value="reset">Reset to Default</button>
+    </form>
+
+
+  </div>
+</body>
+</html>

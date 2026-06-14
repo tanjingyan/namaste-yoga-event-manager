@@ -1,0 +1,233 @@
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 0;
+  color: #2c3e50;
+  line-height: 1.6;
+  background: linear-gradient(-45deg, #f9d342, #ff9a8b, #fcd5ce, #ffe066, #a8e6cf, #ffd3a5);
+  background-size: 400% 400%;
+  animation: gradientMove 15s ease infinite;
+}
+
+/* === Gradient Animation === */
+@keyframes gradientMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* === Header & Site Branding === */
+.site-title-wrapper {
+  text-align: center;
+  margin-top: 40px;
+  margin-bottom: 20px;
+}
+
+.site-title {
+  font-size: 3em;
+  font-weight: 800;
+  margin: 0;
+  color: #2c3e50;
+}
+
+.site-description {
+  font-size: 1.2em;
+  font-style: italic;
+  color: #555;
+  margin-top: 8px;
+}
+
+/* === Container Box === */
+.container {
+  max-width: 1000px;
+  margin: 40px auto;
+  padding: 20px 30px;
+  background-color: #ffffffcc;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* === Page Title === */
+.page-title {
+  font-weight: 800;
+  font-size: 2em;
+  color: #2c3e50;
+  margin-bottom: 20px;
+}
+
+/* === Cards Container Flex Layout === */
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  justify-content: flex-start;
+  align-items: stretch;
+}
+
+/* === Individual Event Card Styling === */
+.event-card {
+  flex: 0 1 calc(33.333% - 10px);
+  width: calc(33.333% - 10px);
+  min-width: 220px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.12);
+  padding: 15px 18px;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.event-card:hover {
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
+  border: 2px solid #007bff;
+}
+
+.event-card.selected {
+  border: 2px solid #28a745;
+  box-shadow: 0 8px 20px rgba(40, 167, 69, 0.3);
+}
+
+/* === Reserve Button === */
+.reserve-button-wrapper {
+  text-align: center;
+  margin-top: 15px;
+  display: none; /* hidden by default */
+}
+
+.event-card:hover .reserve-button-wrapper {
+  display: block; /* show on hover */
+}
+
+.event-card.selected .reserve-button-wrapper {
+  display: block; /* keep showing after clicking */
+}
+
+.reserve-button {
+  position: absolute;
+  bottom: -50px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, #28a745, #20c997);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 25px;
+  font-weight: bold;
+  font-size: 0.95em;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+  white-space: nowrap;
+}
+
+.reserve-button:hover {
+  background: linear-gradient(135deg, #218838, #1e7e34);
+  transform: translateX(-50%) translateY(-2px);
+  box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+}
+
+.event-card.selected .reserve-button {
+  bottom: 15px;
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    bottom: -50px;
+    opacity: 0;
+  }
+  to {
+    bottom: 15px;
+    opacity: 1;
+  }
+}
+
+/* === Card Content === */
+.event-title {
+  font-size: 1.3em;
+  margin-bottom: 8px;
+  color: #2c3e50;
+  line-height: 1.4;
+}
+
+.event-info {
+  margin-bottom: 15px;
+}
+
+.event-meta p,
+.price-section p {
+  margin: 5px 0;
+  font-size: 0.9em;
+  color: #333;
+}
+
+.tax-note {
+  font-style: italic;
+  color: #6c757d;
+  font-size: 0.85em;
+  display: block;
+  margin-top: 5px;
+}
+
+.event-description {
+  font-size: 0.9em;
+  color: #555;
+  margin-top: auto;
+  padding-bottom: 50px; /* Space for reserve button */
+}
+
+hr {
+  margin: 10px 0;
+  border: none;
+  border-top: 1px solid #ddd;
+}
+
+/* === Selection Indicator === */
+.event-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #28a745, #20c997);
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+}
+
+.event-card.selected::before {
+  transform: scaleX(1);
+}
+
+/* === Responsive Design === */
+@media (max-width: 1000px) {
+  .event-card {
+    flex: 0 1 calc(50% - 8px);
+    width: calc(50% - 8px);
+  }
+}
+
+@media (max-width: 650px) {
+  .container {
+    max-width: 95%;
+    padding: 15px 20px;
+  }
+
+  .card-container {
+    justify-content: center;
+    gap: 12px;
+  }
+
+  .event-card {
+    flex: 1 1 100%;
+    width: 100%;
+    min-width: auto;
+    padding: 12px 15px;
+  }
+}
